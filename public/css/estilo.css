@@ -1,0 +1,120 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial Black', sans-serif;
+    background-color: #121212;
+    /*background-image: url('/images/loguito.jpg'); */
+    background-size: cover;
+    background-attachment: fixed;
+    color: #f0f0f0;
+}
+
+a {
+    color: #e50914;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ff3d3d;
+}
+
+.navbar {
+    background-color: #000;
+    border-bottom: 3px solid #e50914;
+    padding: 1rem 2rem;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+}
+
+.navbar-nav .nav-link {
+    color: white !important;
+    margin-right: 1rem;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #e50914 !important;
+}
+
+h1, h2, h3 {
+    font-family: 'Impact', sans-serif;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.texto-header{
+    font-family: 'Impact';
+     color: white;
+}
+
+
+.logo-title {
+    font-size: 2.5rem;
+    font-family: 'Impact', sans-serif;
+    color: white;
+}
+
+.logo-title span {
+    color: #e50914;
+}
+
+
+
+.btn-primary {
+    background-color: #e50914;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.btn-primary:hover {
+    background-color: #ff3d3d;
+}
+
+.banner-home {
+    background: url('/images/banner.png') no-repeat center center;
+    background-size: cover;
+    height: 620px;
+    width: 100%;
+    border-bottom: 3px solid #8b0000; 
+}
+
+.navbar .nav-link {
+    white-space: nowrap;
+    display: inline-block;
+}
+
+
+.card {
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 2px solid #e50914;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.card-header, .card-footer {
+    background-color: transparent;
+    color: #fff;
+    border-bottom: 1px solid #e50914;
+}
+
+
+footer {
+    background-color: #000;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    border-top: 3px solid #e50914;
+    margin-top: 40px;
+}
