@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $noticia->titulo }}</h5>
                     <p class="card-text">{{ Str::limit($noticia->contenido, 100) }}</p>
-                    <a href="{{ url('/noticias') }}" class="btn btn-outline-danger btn-sm">Ver más</a>
+                    <a href="{{ route('noticia.detalle', $noticia->id) }}" class="btn btn-outline-danger btn-sm">Ver más</a>
                 </div>
             </div>
         </div>

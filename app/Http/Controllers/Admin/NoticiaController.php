@@ -34,12 +34,18 @@ class NoticiaController extends Controller
         'titulo' => 'required|string|max:255',
         'contenido' => 'required',
         'fecha' => 'nullable|date',
+        'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
+        $rutaImagen = null;
+        if ($request->hasFile('imagen')) {
+        $rutaImagen = $request->file('imagen')->store('noticias', 'public');
+        }
 
      Noticia::create([
         'titulo' => $request->titulo,
         'contenido' => $request->contenido,
         'fecha' => $request->fecha,
+        'imagen' => $rutaImagen,
     ]);
         return redirect()->route('noticias.index')->with('success', 'Noticia creada correctamente.');
     }

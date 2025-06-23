@@ -3,7 +3,7 @@
 @section('content')
     <h1 class="mb-4">Agregar nueva noticia</h1>
 
-    <form action="{{ route('noticias.store') }}" method="POST">
+    <form action="{{ route('noticias.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-3">
@@ -19,6 +19,11 @@
         <div class="mb-3">
             <label for="fecha" class="form-label">Fecha</label>
             <input type="date" name="fecha" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="imagen" class="form-label">Imagen</label>
+            <input type="file" name="imagen" class="form-control" accept="image/*">
         </div>
 
         <button type="submit" class="btn btn-success">Guardar noticia</button>
