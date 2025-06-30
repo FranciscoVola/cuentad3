@@ -1,47 +1,35 @@
 @extends('layouts.app')
 
 @section('content')
+    <h1 class="mb-4">Listado de Noticias</h1>
 
     @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        
-        <h1>Administrar Noticias</h1>
-        <a href="{{ route('noticias.create') }}" class="btn btn-primary">Agregar nueva</a>
-    </div>
+    <a href="{{ route('noticias.create') }}" class="btn btn-primary mb-3">Agregar nueva noticia</a>
 
-    @if($noticias->count())
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Título</th>
-                    <th>Fecha</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($noticias as $noticia)
-                    <tr>
-                        <td>{{ $noticia->titulo }}</td>
-                        <td>{{ \Carbon\Carbon::parse($noticia->fecha)->format('d/m/Y') }}</td>
-                        <td>
-                            <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn btn-sm btn-warning">Editar</a>
-                            <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" style="display:inline-block">
-                                @csrf
-                             @method('DELETE')
+    <div class="row">
+        @forelse($noticias as $noticia)
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    @if($noticia->imagen)
+                        <img src="{{ asset('storage/' . $noticia->imagen) }}" class="card-img-top" alt="Imagen de la noticia" style="height: 200px; object-fit: cover;">
+                    @endif
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $noticia->titulo }}</h5>
+                        <p class="card-text">{{ Str::limit($noticia->contenido, 100) }}</p>
+                        <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn btn-sm btn-warning">Editar</a>
+                        <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
                             <button class="btn btn-sm btn-danger">Eliminar</button>
-                            </form>
-
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p>No hay noticias cargadas.</p>
-    @endif
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <p>No hay noticias cargadas.</p>
+        @endforelse
+    </div>
 @endsection

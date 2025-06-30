@@ -10,10 +10,10 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->rol === 'admin') {
-            return $next($request);
-        }
+    if (Auth::check() && Auth::user()->rol === 'admin') {
+        return $next($request);
+    }
 
-        abort(403, 'Acceso no autorizado.');
+    return redirect()->route('acceso.denegado');
     }
 }

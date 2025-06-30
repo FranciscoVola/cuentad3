@@ -27,6 +27,11 @@
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
+                <div class="mb-3 text-end">
+                    <a href="{{ route('password.request') }}" class="text-decoration-none text-danger">
+                    ¿Olvidaste tu contraseña?
+                    </a>
+                </div>
 
                 <div class="mb-3 form-check">
                     <input class="form-check-input" type="checkbox" name="remember" id="remember">

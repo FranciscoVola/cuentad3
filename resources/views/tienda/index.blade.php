@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <h5 class="card-title text-danger">{{ $producto->nombre }}</h5>
                         <p class="card-text">{{ Str::limit($producto->descripcion, 100) }}</p>
-                        <strong class="text-warning">${{ number_format($producto->precio, 2, ',', '.') }}</strong>
+                        <strong class="text-danger">${{ number_format($producto->precio, 2, ',', '.') }}</strong>
                         <a href="{{ route('producto.detalle', $producto->id) }}" class="btn btn-outline-light btn-sm mt-2">Ver más</a>
 
                     </div>

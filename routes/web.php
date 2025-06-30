@@ -101,12 +101,20 @@ Route::get('/simulador-arcade', function () {
     return view('simulador.arcade');
 })->name('simulador.arcade');
 
-//auth
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+// Admin (solo para usuarios logueados y con rol 'admin')
+Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->group(function () {
     Route::resource('noticias', NoticiaController::class);
     Route::resource('productos', ProductoController::class);
     Route::resource('luchadores', LuchadorController::class);
+});
 
+//acceso denegado
+Route::get('/acceso-denegado', function () {
+    return view('acceso_denegado.acceso_denegado');
+})->name('acceso.denegado');
+
+Route::get('/lanzamiento', function () {
+    return view('landing');
 });
 
 

@@ -1,17 +1,31 @@
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 body {
-    font-family: 'Arial Black', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #121212;
-    color: #f0f0f0;
-    overflow-x: hidden; /* 🔧 Evita el scroll horizontal */
+    background-image: url('/images/fondo-general.png'); /* 📌 Tu fondo decorativo */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #ffffff;
+    overflow-x: hidden;
 }
 
-
+/* Opcional: superposición oscura para mejorar legibilidad */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3); /* 🔥 Ajustá la opacidad según necesites */
+    z-index: -1;
+}
 
 /* Enlaces */
 a {
@@ -25,13 +39,14 @@ a:hover {
 
 /* Navbar */
 .navbar {
-    background-color: #000;
+    background-color: #000000;
     border-bottom: 3px solid #e50914;
     padding: 1rem 2rem;
 }
 
 .navbar-brand {
     font-size: 1.8rem;
+    font-family: 'Impact', sans-serif;
     font-weight: bold;
     color: white;
 }
@@ -54,15 +69,26 @@ h1, h2, h3 {
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 20px;
-    font-weight: 700;
+    font-weight: normal;
 }
 
-.texto-header {
-    font-family: 'Impact';
+.titulo-impact {
+    font-family: 'Impact', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 1px;
     color: white;
 }
 
-/* Logo */
+.titulo-impact span {
+    color: #e50914;
+}
+
+.texto-header {
+    font-family: 'Impact', sans-serif;
+    color: white;
+}
+
+/* Logo principal */
 .logo-title {
     font-size: 2.5rem;
     font-family: 'Impact', sans-serif;
@@ -87,7 +113,7 @@ h1, h2, h3 {
 }
 
 .btn-danger {
-    background-color: #E10600;
+    background-color: #e50914;
     border: none;
 }
 
@@ -95,23 +121,80 @@ h1, h2, h3 {
     background-color: #c10000;
 }
 
+/* Fondos de secciones con tramas específicas */
+.section-fondo-trama,
+.seccion-productos {
+    position: relative;
+    z-index: 1;
+}
+
+ /*
+.section-fondo-trama::before,
+.seccion-productos::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-repeat: repeat;
+    background-size: contain;
+    background-position: center;
+    opacity: 0.7;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.section-fondo-trama::before {
+    background-image: url('/images/trama-cuentad3.png');
+}
+
+.seccion-productos::before {
+    background-image: url('/images/trama2.png');
+}
+*/
+/* para que el fondo no se coma las secciones de noticias y productos destacados */
+.section-fondo-trama,
+.seccion-productos {
+    background-color: rgba(0, 0, 0, 1.0); /* Fondo negro con 60% de opacidad */
+    padding: 2rem 1rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+/* Títulos secciones */
+
+.titulo-seccion {
+    font-family: 'Impact', sans-serif;
+    font-size: 2rem;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding: 0.3rem 1rem;
+    background-color: rgb(0, 0, 0);
+    border-left: 5px solid #e50914;
+    display: inline-block;
+}
+
 /* Cards */
 .card {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #1a1a1a;
     border: 2px solid #e50914;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    color: white;
+    border-radius: 10px;
 }
 
 .card-title {
-    color: #C9A328;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.card-text {
+    color: #ccc;
 }
 
 .card-header, .card-footer {
     background-color: transparent;
     color: #fff;
-    border-bottom: 1px solid #e50914;
+    border-color: #e50914;
 }
 
 /* Banner */
@@ -120,7 +203,7 @@ h1, h2, h3 {
     background-size: cover;
     height: 620px;
     width: 100%;
-    border-bottom: 3px solid #8b0000;
+    border-bottom: 3px solid #e50914;
 }
 
 /* Footer */

@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <h2 class="card-title text-danger">{{ $producto->nombre }}</h2>
                     <p class="card-text">{{ $producto->descripcion }}</p>
-                    <h4 class="text-warning">${{ number_format($producto->precio, 2, ',', '.') }}</h4>
+                    <h4 class="text-white">${{ number_format($producto->precio, 2, ',', '.') }}</h4>
 
                     <a href="{{ url('/tienda') }}" class="btn btn-secondary mt-3">← Volver a la tienda</a>
                 </div>

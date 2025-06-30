@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <title>CUENTAD3</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </head>
-<body>
 
-<nav class="navbar navbar-dark bg-black navbar-expand-@guest lg @else false @endguest">
+<body class="@auth logueado @endauth">
+
+<nav class="navbar navbar-dark bg-black">
     <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
             <img src="{{ asset('images/negativo.jpg') }}" alt="Logo CuentaD3" style="height: 90px;" class="me-3">
@@ -21,6 +24,8 @@
 
         <div class="collapse navbar-collapse" id="navbarCuentad3">
             <ul class="navbar-nav ms-auto">
+
+                {{-- Enlaces públicos --}}
                 <li class="nav-item"><a href="{{ url('/') }}" class="nav-link">Inicio</a></li>
                 <li class="nav-item"><a href="{{ url('/noticias') }}" class="nav-link">Noticias</a></li>
                 <li class="nav-item"><a href="{{ url('/tienda') }}" class="nav-link">Tienda</a></li>
@@ -29,10 +34,15 @@
                 <li class="nav-item"><a href="{{ url('/contacto') }}" class="nav-link">Contacto</a></li>
                 <li class="nav-item"><a href="{{ url('/entradas') }}" class="nav-link">Entradas</a></li>
 
+                {{-- Admin --}}
                 @auth
-                    <li class="nav-item"><a href="{{ url('/admin/noticias') }}" class="nav-link">Admin Noticias</a></li>
-                    <li class="nav-item"><a href="{{ url('/admin/luchadores') }}" class="nav-link">Admin Luchadores</a></li>
-                    <li class="nav-item"><a href="{{ url('/admin/productos') }}" class="nav-link">Admin Productos</a></li>
+                    @if(Auth::user()->rol === 'admin')
+                        <li class="nav-item"><a href="{{ url('/admin/noticias') }}" class="nav-link">Admin Noticias</a></li>
+                        <li class="nav-item"><a href="{{ url('/admin/luchadores') }}" class="nav-link">Admin Luchadores</a></li>
+                        <li class="nav-item"><a href="{{ url('/admin/productos') }}" class="nav-link">Admin Productos</a></li>
+                    @endif
+
+                    {{-- Cerrar sesión --}}
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}" class="d-inline">
                             @csrf
@@ -40,14 +50,15 @@
                         </form>
                     </li>
                 @else
+                    {{-- Invitado --}}
                     <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Login</a></li>
                     <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Registrarse</a></li>
                 @endauth
+
             </ul>
         </div>
     </div>
 </nav>
-
 
 <main class="container mt-4">
     @yield('content')

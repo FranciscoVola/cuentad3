@@ -10,7 +10,7 @@
                 <div class="card bg-dark text-white border border-danger h-100">
                     <img src="{{ asset('storage/' . $luchador->imagen) }}" class="card-img-top" alt="{{ $luchador->nombre }}">
                     <div class="card-body">
-                        <h5 class="card-title" style="font-family: Impact, sans-serif;">{{ $luchador->nombre }}</h5>
+                        <h5 class="card-title text-danger" style="font-family: Impact, sans-serif;">{{ $luchador->nombre }}</h5>
                         <p class="card-text"><strong>Alias:</strong> {{ $luchador->alias }}</p>
                         <p class="card-text">{{ Str::limit($luchador->biografia, 80) }}</p>
                         <a href="{{ route('luchador.detalle', $luchador->id) }}" class="btn btn-danger w-100">Ver Perfil</a>
