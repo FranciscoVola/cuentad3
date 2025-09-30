@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Producto;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
@@ -13,9 +15,8 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::all();
+        $productos = Producto::with('categoria')->get(); // obtenemos productos con su categoría
         return view('admin.productos.index', compact('productos'));
-
     }
 
     /**
@@ -23,7 +24,8 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        return view('admin.productos.create');
+        $categorias = Categoria::all();
+        return view('admin.productos.create', compact('categorias'));
     }
 
     /**
@@ -31,15 +33,38 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
+        // Validación con mensajes personalizados
         $request->validate([
-        'nombre' => 'required|string|max:255',
-        'descripcion' => 'nullable',
-        'precio' => 'required|numeric|min:0',
-    ]);
+            'nombre' => 'required|string|min:5|max:255',
+            'descripcion' => 'nullable|string|min:10',
+            'precio' => 'required|numeric|min:0',
+            'categoria_id' => 'required|exists:categorias,id',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.min' => 'El nombre debe tener al menos 5 caracteres.',
+            'nombre.max' => 'El nombre no puede superar los 255 caracteres.',
+            'descripcion.min' => 'La descripción debe tener al menos 10 caracteres.',
+            'precio.required' => 'El precio es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un valor numérico.',
+            'precio.min' => 'El precio no puede ser negativo.',
+            'categoria_id.required' => 'Debes seleccionar una categoría.',
+            'categoria_id.exists' => 'La categoría seleccionada no es válida.',
+            'imagen.image' => 'El archivo debe ser una imagen válida.',
+            'imagen.mimes' => 'Solo se permiten imágenes jpeg, png, jpg, gif, svg, webp.',
+            'imagen.max' => 'La imagen no puede superar los 2MB.',
+        ]);
 
-    Producto::create($request->all());
+        $datos = $request->only(['nombre', 'descripcion', 'precio', 'categoria_id']);
 
-    return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
+        // Guardar imagen si fue subida
+        if ($request->hasFile('imagen')) {
+            $datos['imagen'] = $request->file('imagen')->store('productos', 'public');
+        }
+
+        Producto::create($datos);
+
+        return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
     }
 
     /**
@@ -56,7 +81,8 @@ class ProductoController extends Controller
     public function edit(string $id)
     {
         $producto = Producto::findOrFail($id);
-        return view('admin.productos.edit', compact('producto'));
+        $categorias = Categoria::all();
+        return view('admin.productos.edit', compact('producto', 'categorias'));
     }
 
     /**
@@ -64,15 +90,49 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-         $request->validate([
-        'nombre' => 'required|string|max:255',
-        'descripcion' => 'nullable',
-        'precio' => 'required|numeric|min:0',
-    ]);
-     $producto = Producto::findOrFail($id);
-    $producto->update($request->all());
+        // Validación con mensajes personalizados
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string|min:10',
+            'precio' => 'required|numeric|min:0',
+            'categoria_id' => 'required|exists:categorias,id',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.max' => 'El nombre no puede superar los 255 caracteres.',
+            'descripcion.min' => 'La descripción debe tener al menos 10 caracteres.',
+            'precio.required' => 'El precio es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un valor numérico.',
+            'precio.min' => 'El precio no puede ser negativo.',
+            'categoria_id.required' => 'Debes seleccionar una categoría.',
+            'categoria_id.exists' => 'La categoría seleccionada no es válida.',
+            'imagen.image' => 'El archivo debe ser una imagen válida.',
+            'imagen.mimes' => 'Solo se permiten imágenes jpeg, png, jpg, gif, svg, webp.',
+            'imagen.max' => 'La imagen no puede superar los 2MB.',
+        ]);
 
-    return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
+        $producto = Producto::findOrFail($id);
+        $datos = $request->only(['nombre', 'descripcion', 'precio', 'categoria_id']);
+
+        // Si se sube una nueva imagen
+        if ($request->hasFile('imagen')) {
+            // Borrar imagen anterior si existe
+            if ($producto->imagen && Storage::disk('public')->exists($producto->imagen)) {
+                Storage::disk('public')->delete($producto->imagen);
+            }
+
+            $datos['imagen'] = $request->file('imagen')->store('productos', 'public');
+        }
+
+        $producto->update($datos);
+
+        return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
+    }
+
+    public function confirmDelete($id)
+    {
+    $producto = \App\Models\Producto::findOrFail($id);
+    return view('admin.productos.confirm-delete', compact('producto'));
     }
 
     /**
@@ -80,9 +140,15 @@ class ProductoController extends Controller
      */
     public function destroy(string $id)
     {
-         $producto = Producto::findOrFail($id);
+        $producto = Producto::findOrFail($id);
+
+        // Eliminar imagen si existe
+        if ($producto->imagen && Storage::disk('public')->exists($producto->imagen)) {
+            Storage::disk('public')->delete($producto->imagen);
+        }
+
         $producto->delete();
 
-    return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente.');
+        return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente.');
     }
 }

@@ -2,27 +2,31 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Producto;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductosSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        Producto::create([
-            'nombre' => 'Remera Oficial Legion Nueva Era',
-            'descripcion' => 'Remera de algodón estampada. Talle único.',
-            'precio' => 15000,
-        ]);
+        // Crear carpeta si no existe
+        Storage::disk('public')->makeDirectory('productos');
 
-         Producto::create([
-            'nombre' => 'Entrada Show Legion Nueva era: La cumbia Legionaria',
-            'descripcion' => 'Acceso general al evento del 5 de junio.',
-            'precio' => 7500,
+        $nombreFinal = 'productos/' . Str::random(10) . '_producto1.jpg';
+
+        // Copiar la imagen desde database/seeders/images a storage/app/public/productos
+        $origen = database_path('seeders/images/producto1.jpg');
+        $destino = storage_path('app/public/' . $nombreFinal);
+        copy($origen, $destino);
+
+        // Crear producto
+        Producto::create([
+            'nombre' => 'Remera CUENTAD3',
+            'descripcion' => 'Remera oficial de la comunidad de lucha libre argentina.',
+            'precio' => 4500,
+            'imagen' => $nombreFinal,
         ]);
     }
 }

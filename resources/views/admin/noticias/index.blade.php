@@ -7,24 +7,32 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('noticias.create') }}" class="btn btn-primary mb-3">Agregar nueva noticia</a>
+    <h2 class="mb-3">Noticias cargadas</h2>
+    
+    <a href="{{ route('noticias.create') }}" class="btn btn-success mb-3">Agregar nueva noticia</a>
 
     <div class="row">
         @forelse($noticias as $noticia)
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
+
                     @if($noticia->imagen)
-                        <img src="{{ asset('storage/' . $noticia->imagen) }}" class="card-img-top" alt="Imagen de la noticia" style="height: 200px; object-fit: cover;">
+                        <img src="{{ asset('storage/' . $noticia->imagen) }}" 
+                             class="card-img-top" 
+                             alt="Imagen de la noticia" 
+                             style="height: 200px; object-fit: cover;">
+                    @else
+                        <img src="{{ asset('images/default.jpg') }}" 
+                             class="card-img-top" 
+                             alt="Imagen por defecto" 
+                             style="height: 200px; object-fit: cover;">
                     @endif
+
                     <div class="card-body">
-                        <h5 class="card-title">{{ $noticia->titulo }}</h5>
+                        <h3 class="card-title">{{ $noticia->titulo }}</h3>
                         <p class="card-text">{{ Str::limit($noticia->contenido, 100) }}</p>
                         <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn btn-sm btn-warning">Editar</a>
-                        <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Eliminar</button>
-                        </form>
+                        <a href="{{ route('noticias.confirmDelete', $noticia->id) }}" class="btn btn-sm btn-danger">Eliminar</a>
                     </div>
                 </div>
             </div>

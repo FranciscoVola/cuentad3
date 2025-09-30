@@ -43,8 +43,8 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        //Auth::login($user);
 
-        return redirect()->intended(route('home', absolute: false));
+       return redirect()->route('login')->with('status', 'Registro exitoso. Ahora podés iniciar sesión.');
     }
 }

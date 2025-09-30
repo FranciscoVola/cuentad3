@@ -1,123 +1,108 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use App\Models\Noticia;
-use App\Models\Producto;
-use App\Models\Luchador;
+use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Public\CarritoController;
+use App\Http\Controllers\Public\PagoController;
+use App\Http\Controllers\Public\SimuladorController;
+use App\Http\Controllers\Public\ContactoController;
+use App\Http\Controllers\Public\EntradaController;
 use App\Http\Controllers\Admin\NoticiaController;
 use App\Http\Controllers\Admin\ProductoController;
 use App\Http\Controllers\Admin\LuchadorController;
+use App\Http\Controllers\Admin\EntradaAdminController;
 
-// Landing
-Route::get('/', function () {
-    $noticias = Noticia::latest()->take(3)->get();
-    $productos = Producto::latest()->take(3)->get();
-    return view('home', compact('noticias', 'productos'));
-})->name('home');
+// -----------------------------
+//  Rutas públicas
+// -----------------------------
+
+// Home
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
 // Noticias
-Route::get('/noticias', function () {
-    $noticias = Noticia::latest()->get();
-    return view('noticias.index', compact('noticias'));
-});
-
-Route::get('/noticia/{id}', function ($id) {
-    $noticia = Noticia::findOrFail($id);
-    return view('noticias.detalle', compact('noticia'));
-})->name('noticia.detalle');
+Route::get('/noticias', [HomeController::class, 'noticias'])->name('noticias');
+Route::get('/noticia/{id}', [HomeController::class, 'noticiaDetalle'])->name('noticia.detalle');
 
 // Tienda
-Route::get('/tienda', function () {
-    $productos = Producto::all();
-    return view('tienda.index', compact('productos'));
+Route::get('/tienda', [HomeController::class, 'tienda'])->name('tienda');
+Route::get('/producto/{id}', [HomeController::class, 'productoDetalle'])->name('producto.detalle');
+
+// Entradas públicas
+Route::get('/entradas', [EntradaController::class, 'index'])->name('entradas.index');
+
+Route::middleware('auth')->group(function () {
+Route::get('/entrada/{entrada}/comprar', [EntradaController::class, 'comprar'])->name('entrada.comprar');
+Route::get('/entrada/respuesta', [EntradaController::class, 'respuesta'])->name('entrada.respuesta');
 });
 
 
-Route::get('/producto/{id}', function ($id) {
-    $producto = Producto::findOrFail($id);
-    return view('tienda.detalle', compact('producto'));
-})->name('producto.detalle');
+// Luchadores
+Route::get('/luchadores', [HomeController::class, 'luchadores'])->name('luchadores');
+Route::get('/luchador/{id}', [HomeController::class, 'luchadorDetalle'])->name('luchador.detalle');
+Route::get('/ranking', [HomeController::class, 'ranking'])->name('ranking');
 
+// Simulador
+Route::get('/simulador', [SimuladorController::class, 'index'])->name('simulador');
+Route::post('/simulador', [SimuladorController::class, 'resultado'])->name('simulador.resultado');
+Route::get('/simulador-arcade', [HomeController::class, 'simuladorArcade'])->name('simulador.arcade');
 
-// Entradas
-Route::get('/entradas', function () {
-    return view('entradas.index');
-})->name('entradas');
+// Contacto
+Route::get('/contacto', [HomeController::class, 'contacto'])->name('contacto');
+Route::post('/contacto/enviar', [ContactoController::class, 'enviar'])->name('contacto.enviar');
 
+// Información
+Route::get('/sobre', [HomeController::class, 'sobre'])->name('sobre');
+Route::get('/acceso-denegado', [HomeController::class, 'accesoDenegado'])->name('acceso.denegado');
 
-//luchadores
-Route::get('/luchadores', function () {
-    $luchadores = Luchador::all();
-    return view('luchadores.index', compact('luchadores'));
+// -----------------------------
+//  Carrito
+// -----------------------------
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
+    Route::get('/carrito/agregar/{id}', [CarritoController::class, 'agregar'])->name('carrito.agregar');
+    Route::get('/carrito/quitar/{id}', [CarritoController::class, 'quitar'])->name('carrito.quitar');
+    Route::get('/carrito/vaciar', [CarritoController::class, 'vaciar'])->name('carrito.vaciar');
+    Route::post('/carrito/finalizar', [CarritoController::class, 'finalizar'])->name('carrito.finalizar');
 });
 
-Route::get('/luchador/{id}', function ($id) {
-    $luchador = Luchador::findOrFail($id);
-    return view('luchadores.detalle', compact('luchador'));
-})->name('luchador.detalle');
+// -----------------------------
+//  Mercado Pago
+// -----------------------------
 
+Route::get('/pago/iniciar', [PagoController::class, 'iniciarPago'])->name('pago.iniciar');
+Route::get('/pago/respuesta', [PagoController::class, 'respuesta'])->name('pago.respuesta');
 
-//ranking de luchadores
-Route::get('/ranking', function () {
-    $luchadores = Luchador::latest()->take(9)->get();
-    return view('ranking.index', compact('luchadores'));
-})->name('ranking');
+// -----------------------------
+// Panel de Administración
+// -----------------------------
 
+Route::middleware(['auth', 'admin'])->get('/admin/panel', function () {
+    return view('admin.panel');
+})->name('admin.panel');
 
-//contacto
-Route::get('/contacto', function () {
-    return view('contacto.index');
-})->name('contacto');
-
-//sobre nosotros
-Route::get('/sobre', function () {
-    return view('sobre.index');
-})->name('sobre');
-
-//simulador de combates
-Route::get('/simulador', function () {
-    $luchadores = Luchador::all();
-    return view('simulador.index', compact('luchadores'));
-})->name('simulador');
-
-Route::post('/simulador', function (Request $request) {
-    $a = $request->luchador_a;
-    $b = $request->luchador_b;
-
-    if ($a === $b) {
-        $resultado = "¡$a se ganó a sí mismo! 🌀 Esto no debería pasar...";
-    } else {
-        $ganador = rand(0, 1) ? $a : $b;
-        $resultado = "¡$ganador ganó el combate!";
-    }
-
-    $luchadores = Luchador::all();
-    return view('simulador.index', compact('luchadores', 'resultado'));
-})->name('simulador.resultado');
-
-
-Route::get('/simulador-arcade', function () {
-    return view('simulador.arcade');
-})->name('simulador.arcade');
-
-// Admin (solo para usuarios logueados y con rol 'admin')
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->group(function () {
     Route::resource('noticias', NoticiaController::class);
     Route::resource('productos', ProductoController::class);
+    Route::resource('entradas', EntradaAdminController::class)->names('entradas-admin');
     Route::resource('luchadores', LuchadorController::class);
+
+    // Confirmaciones antes de eliminar
+    Route::get('noticias/{id}/confirmar-eliminacion', [NoticiaController::class, 'confirmDelete'])->name('noticias.confirmDelete');
+    Route::get('productos/{id}/confirmar-eliminacion', [ProductoController::class, 'confirmDelete'])->name('productos.confirmDelete');
+    Route::get('luchadores/{id}/confirmar-eliminacion', [LuchadorController::class, 'confirmDelete'])->name('luchadores.confirmDelete');
+    Route::get('entradas/{id}/confirmar-eliminacion', [EntradaAdminController::class, 'confirmDelete'])->name('entradas-admin.confirmDelete');
 });
 
-//acceso denegado
-Route::get('/acceso-denegado', function () {
-    return view('acceso_denegado.acceso_denegado');
-})->name('acceso.denegado');
+// -----------------------------
+// Vista de Usuarios (Admin)
+// -----------------------------
 
-Route::get('/lanzamiento', function () {
-    return view('landing');
-});
+Route::middleware(['auth', 'admin'])->get('/usuarios', [HomeController::class, 'usuariosIndex'])->name('usuarios.index');
+Route::middleware(['auth', 'admin'])->get('/usuarios/{id}', [HomeController::class, 'usuariosShow'])->name('usuarios.show');
 
+// -----------------------------
+// Auth
+// -----------------------------
 
-
-require __DIR__.'/auth.php';
-
+require __DIR__ . '/auth.php';

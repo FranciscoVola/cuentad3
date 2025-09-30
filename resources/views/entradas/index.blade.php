@@ -2,44 +2,48 @@
 
 @section('content')
 <div class="container">
-    <h1 class="mb-4 text-center">Próximos Eventos</h1>
+    <h1 class="mb-4 titulo-seccion">Próximos eventos</h1>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <!-- Evento 1 -->
-        <div class="col">
-            <div class="card h-100">
-                <img src="{{ asset('images/evento1.jpg') }}" class="card-img-top" alt="Evento 1">
-                <div class="card-body">
-                    <h5 class="card-title">CuentaD3: Resurrección</h5>
-                    <p class="card-text">📍 Estadio Luna Park<br>🗓️ 30 de junio, 2025<br>⌚ 20:00 hs</p>
-                    <button class="btn btn-danger w-100" disabled>Próximamente</button>
-                </div>
-            </div>
-        </div>
+    @if ($entradas->isEmpty())
+        <p class="text-center">Aún no hay eventos disponibles.</p>
+    @else
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach ($entradas as $entrada)
+                <div class="col">
+                    <div class="card h-100">
 
-        <!-- Evento 2 -->
-        <div class="col">
-            <div class="card h-100">
-                <img src="{{ asset('images/evento2.jpg') }}" class="card-img-top" alt="Evento 2">
-                <div class="card-body">
-                    <h5 class="card-title">CuentaD3: Guerra Total</h5>
-                    <p class="card-text">📍 Microestadio Morón<br>🗓️ 15 de julio, 2025<br>⌚ 19:00 hs</p>
-                    <button class="btn btn-danger w-100" disabled>Próximamente</button>
-                </div>
-            </div>
-        </div>
+                        @if ($entrada->imagen)
+                            <img src="{{ asset('storage/' . $entrada->imagen) }}" 
+                                 class="card-img-top" 
+                                 alt="Imagen del evento">
+                        @else
+                            <img src="{{ asset('images/default.jpg') }}" 
+                                 class="card-img-top" 
+                                 alt="Imagen por defecto">
+                        @endif
 
-        <!-- Evento 3 -->
-        <div class="col">
-            <div class="card h-100">
-                <img src="{{ asset('images/evento3.jpg') }}" class="card-img-top" alt="Evento 3">
-                <div class="card-body">
-                    <h5 class="card-title">CuentaD3: Destino Final</h5>
-                    <p class="card-text">📍 Teatro Flores<br>🗓️ 28 de julio, 2025<br>⌚ 21:00 hs</p>
-                    <button class="btn btn-danger w-100" disabled>Próximamente</button>
+                        <div class="card-body">
+                            <h3 class="card-title">{{ $entrada->evento }}</h3>
+
+                            <p class="card-text">
+                                📍 <strong>Lugar:</strong> {{ $entrada->lugar ?? 'A confirmar' }}<br>
+                                🗓️ <strong>Fecha:</strong> 
+                                {{ $entrada->fecha ? \Carbon\Carbon::parse($entrada->fecha)->format('d/m/Y') : 'A confirmar' }}<br>
+                                💲 <strong>Precio:</strong> 
+                                {{ isset($entrada->precio) ? '$' . number_format($entrada->precio, 2, ',', '.') : 'A confirmar' }}<br>
+                                ⏰ <strong>Hora:</strong> {{ $entrada->hora ?? 'A confirmar' }}
+                            </p>
+
+                            @auth
+                               <a href="{{ route('entrada.comprar', $entrada->id) }}" class="btn btn-success w-100">Comprar Entrada</a>
+                            @else
+                                <a href="{{ route('login') }}" class="btn btn-outline-primary w-100">Iniciá sesión para comprar</a>
+                            @endauth
+                        </div>
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
-    </div>
+    @endif
 </div>
 @endsection

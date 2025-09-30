@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+    
+    <h1 class="titulo-impact text-center mb-4">
+    Bienvenido a 
+    <span class="impact-logo">
+        CUENTA<span class="d3-rojo">D3</span>
+    </span> 
+    {{ Auth::user()->name ?? '' }}
+    </h1>
+
+
+
     <div class="banner-home mb-5"></div>
 
     <section class="seccion-noticias section-fondo-trama pb-5">
@@ -10,7 +21,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title titulo-card">{{ $noticia->titulo }}</h5>
+                            <h3 class="card-title titulo-card">{{ $noticia->titulo }}</h3>
                             <p class="card-text">{{ Str::limit($noticia->contenido, 100) }}</p>
                             <a href="{{ route('noticia.detalle', $noticia->id) }}" class="btn btn-outline-danger btn-sm">Ver más</a>
                         </div>
@@ -29,7 +40,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title titulo-card">{{ $producto->nombre }}</h5>
+                            <h3 class="card-title titulo-card">{{ $producto->nombre }}</h3>
                             <p class="card-text">{{ Str::limit($producto->descripcion, 80) }}</p>
                             <strong class="text-danger">${{ number_format($producto->precio, 2, ',', '.') }}</strong>
                         </div>

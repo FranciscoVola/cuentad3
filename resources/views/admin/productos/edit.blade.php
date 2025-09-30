@@ -1,28 +1,65 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mb-4">Editar producto</h1>
+   <h1 class="mb-4">{{ __('Edit') }} producto</h1>
 
-    <form action="{{ route('productos.update', $producto->id) }}" method="POST">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" name="nombre" class="form-control" value="{{ $producto->nombre }}" required>
+            <input type="text" id="nombre" name="nombre" class="form-control" value="{{ old('nombre', $producto->nombre) }}" required>
         </div>
 
         <div class="mb-3">
             <label for="descripcion" class="form-label">Descripción</label>
-            <textarea name="descripcion" class="form-control" rows="4">{{ $producto->descripcion }}</textarea>
+            <textarea id="descripcion" name="descripcion" class="form-control" rows="4">{{ old('descripcion', $producto->descripcion) }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="categoria_id" class="form-label">Categoría</label>
+            <select id="categoria_id" name="categoria_id" class="form-select" required>
+                <option value="">-- Seleccionar categoría --</option>
+                @foreach($categorias as $categoria)
+                    <option value="{{ $categoria->id }}" {{ old('categoria_id', $producto->categoria_id) == $categoria->id ? 'selected' : '' }}>
+                        {{ $categoria->nombre }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <div class="mb-3">
             <label for="precio" class="form-label">Precio</label>
-            <input type="number" name="precio" step="0.01" class="form-control" value="{{ $producto->precio }}" required>
+            <input type="number" id="precio" name="precio" step="0.01" class="form-control" value="{{ old('precio', $producto->precio) }}" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar cambios</button>
-        <a href="{{ route('productos.index') }}" class="btn btn-secondary">Cancelar</a>
+        <div class="mb-3">
+            <label class="form-label">Imagen actual</label><br>
+            @if($producto->imagen)
+                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="Imagen actual" style="max-width: 300px;" class="mb-2">
+            @else
+                <p class="text-light">No hay imagen cargada.</p>
+            @endif
+        </div>
+
+        <div class="mb-3">
+            <label for="imagen" class="form-label">Reemplazar imagen</label>
+            <input type="file" id="imagen" name="imagen" class="form-control" accept="image/*">
+            <small class="text-light">Solo se permiten imágenes jpeg, png, jpg, gif, svg, webp. Máx 2MB.</small>
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar cambios</button>
+        <a href="{{ route('productos.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
     </form>
 @endsection

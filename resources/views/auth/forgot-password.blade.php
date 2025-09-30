@@ -1,25 +1,37 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
+@extends('layouts.app')
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@section('content')
+<div class="container mt-5" style="max-width: 500px;">
+    <h1 class="mb-4 titulo-seccion">¿Olvidaste tu contraseña?</h1>
+
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
+
+    <p class="mb-4" style="color: #ccc;">
+    No hay problema. Ingresá tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+    </p>
+
 
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+
+            @error('email')
+                <div class="text-danger mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-light">
+                Enviar enlace de recuperación
+            </button>
         </div>
     </form>
-</x-guest-layout>
+</div>
+@endsection

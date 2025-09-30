@@ -1,217 +1,304 @@
-/* Reset básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+    /* Reset básico */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #121212;
-    background-image: url('/images/fondo-general.png'); /* 📌 Tu fondo decorativo */
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    color: #ffffff;
-    overflow-x: hidden;
-}
 
-/* Opcional: superposición oscura para mejorar legibilidad */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.3); /* 🔥 Ajustá la opacidad según necesites */
-    z-index: -1;
-}
+    /* para q el footer quede abajo siempre*/
+    html, body {
+        height: 100%;
+    }
 
-/* Enlaces */
-a {
-    color: #e50914;
-    text-decoration: none;
-}
 
-a:hover {
-    color: #ff3d3d;
-}
 
-/* Navbar */
-.navbar {
-    background-color: #000000;
-    border-bottom: 3px solid #e50914;
-    padding: 1rem 2rem;
-}
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #121212;
+        background-image: url('/images/fondo-general.png'); /* 📌 Tu fondo decorativo */
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-attachment: fixed;
+        color: #ffffff;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
 
-.navbar-brand {
-    font-size: 1.8rem;
-    font-family: 'Impact', sans-serif;
-    font-weight: bold;
-    color: white;
-}
+    main {
+        flex: 1;
 
-.navbar-nav .nav-link {
-    color: white !important;
-    margin-right: 1rem;
-    white-space: nowrap;
-    display: inline-block;
-}
+    }
 
-.navbar-nav .nav-link:hover {
-    color: #e50914 !important;
-}
+    /* Opcional: superposición oscura para mejorar legibilidad */
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.3); /* 🔥 Ajustá la opacidad según necesites */
+        z-index: -1;
+    }
 
-/* Tipografías y títulos */
-h1, h2, h3 {
-    font-family: 'Impact', sans-serif;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-    font-weight: normal;
-}
+    /* Enlaces */
+    a {
+        color: #e50914;
+        text-decoration: none;
+    }
 
-.titulo-impact {
-    font-family: 'Impact', sans-serif;
-    font-size: 3rem;
-    letter-spacing: 1px;
-    color: white;
-}
+    a:hover {
+        color: #ff3d3d;
+    }
 
-.titulo-impact span {
-    color: #e50914;
-}
+    .titulo-impact {
+        font-family: Impact, sans-serif;
+        font-size: 2.5rem;
+    }
 
-.texto-header {
-    font-family: 'Impact', sans-serif;
-    color: white;
-}
+    .impact-logo {
+        font-family: Impact, sans-serif;
+    }
 
-/* Logo principal */
-.logo-title {
-    font-size: 2.5rem;
-    font-family: 'Impact', sans-serif;
-    color: white;
-}
+    .d3-rojo {
+        color: red;
+    }
 
-.logo-title span {
-    color: #e50914;
-}
+    /* Navbar */
+    .navbar {
+        background-color: #000000;
+        border-bottom: 3px solid #e50914;
+        padding: 0.5rem 1rem;
+    }
 
-/* Botones */
-.btn-primary {
-    background-color: #e50914;
-    border: none;
-    padding: 10px 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
+    .navbar-brand {
+        font-size: 1.8rem;
+        font-family: 'Impact', sans-serif;
+        font-weight: bold;
+        color: white;
+    }
 
-.btn-primary:hover {
-    background-color: #ff3d3d;
-}
 
-.btn-danger {
-    background-color: #e50914;
-    border: none;
-}
+    .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
 
-.btn-danger:hover {
-    background-color: #c10000;
-}
+        @media (min-width: 992px) {
+        .navbar-nav {
+            flex-direction: row;
+            align-items: center;
+            gap: 1rem;
+            justify-content: flex-start; 
+            width: auto; 
+        }
+    }
 
-/* Fondos de secciones con tramas específicas */
-.section-fondo-trama,
-.seccion-productos {
-    position: relative;
-    z-index: 1;
-}
 
- /*
-.section-fondo-trama::before,
-.seccion-productos::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-repeat: repeat;
-    background-size: contain;
-    background-position: center;
-    opacity: 0.7;
-    z-index: -1;
-    pointer-events: none;
-}
+    .navbar-nav .nav-link {
+        color: white !important;
+        white-space: nowrap;
+        display: inline-block;
+    }
 
-.section-fondo-trama::before {
-    background-image: url('/images/trama-cuentad3.png');
-}
+    .navbar-nav .nav-link:hover {
+        color: #e50914 !important;
+    }
 
-.seccion-productos::before {
-    background-image: url('/images/trama2.png');
-}
-*/
-/* para que el fondo no se coma las secciones de noticias y productos destacados */
-.section-fondo-trama,
-.seccion-productos {
-    background-color: rgba(0, 0, 0, 1.0); /* Fondo negro con 60% de opacidad */
-    padding: 2rem 1rem;
-    border-radius: 10px;
-    margin-bottom: 2rem;
-}
+    /* Tipografías y títulos */
+    h1, h2 {
+        font-family: 'Impact', sans-serif;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        font-weight: normal;
+    }
 
-/* Títulos secciones */
+    h3{
+        font-family: 'Poppins', sans-serif;
 
-.titulo-seccion {
-    font-family: 'Impact', sans-serif;
-    font-size: 2rem;
-    color: white;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    padding: 0.3rem 1rem;
-    background-color: rgb(0, 0, 0);
-    border-left: 5px solid #e50914;
-    display: inline-block;
-}
+    }
 
-/* Cards */
-.card {
-    background-color: #1a1a1a;
-    border: 2px solid #e50914;
-    border-radius: 10px;
-}
+    /*titulo h1 en HOME*/
+    .titulo-impact {
+        font-family: 'Impact', sans-serif;
+        font-size: 3rem;
+        letter-spacing: 1px;
+        color: white;
+    }
 
-.card-title {
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-size: 1.2rem;
-    color: white;
-}
 
-.card-text {
-    color: #ccc;
-}
+    .texto-header {
+        font-family: 'Impact', sans-serif;
+        color: white;
+    }
 
-.card-header, .card-footer {
-    background-color: transparent;
-    color: #fff;
-    border-color: #e50914;
-}
+    /* Logo principal */
+    .logo-title {
+        font-size: 2.5rem;
+        font-family: 'Impact', sans-serif;
+        color: white;
+    }
 
-/* Banner */
-.banner-home {
-    background: url('/images/banner.png') no-repeat center center;
-    background-size: cover;
-    height: 620px;
-    width: 100%;
-    border-bottom: 3px solid #e50914;
-}
+    .logo-title span {
+        color: #e50914;
+    }
 
-/* Footer */
-footer {
-    background-color: #000;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    border-top: 3px solid #e50914;
-    margin-top: 40px;
-}
+    /* Botones */
+    .btn-primary {
+        background-color: #e50914;
+        border: none;
+        padding: 10px 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .btn-primary:hover {
+        background-color: #ff3d3d;
+    }
+
+    .btn-danger {
+        background-color: #e50914;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c10000;
+    }
+
+    /* Fondos de secciones con tramas específicas */
+    .section-fondo-trama,
+    .seccion-productos {
+        position: relative;
+        z-index: 1;
+    }
+
+    /*
+    .section-fondo-trama::before,
+    .seccion-productos::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-repeat: repeat;
+        background-size: contain;
+        background-position: center;
+        opacity: 0.7;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    .section-fondo-trama::before {
+        background-image: url('/images/trama-cuentad3.png');
+    }
+
+    .seccion-productos::before {
+        background-image: url('/images/trama2.png');
+    }
+    */
+    /* para que el fondo no se coma las secciones de noticias y productos destacados */
+    .section-fondo-trama,
+    .seccion-productos {
+        background-color: rgba(0, 0, 0, 1.0); /* Fondo negro con 60% de opacidad */
+        padding: 2rem 1rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+
+    /* Títulos secciones */
+
+    .titulo-seccion {
+        font-family: 'Impact', sans-serif;
+        font-size: 2rem;
+        color: white;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        padding: 0.3rem 1rem;
+        background-color: rgb(0, 0, 0);
+        border-left: 5px solid #e50914;
+        display: inline-block;
+    }
+
+    /* Cards */
+    .card {
+        background-color: #1a1a1a;
+        border: 2px solid #e50914;
+        border-radius: 10px;
+    }
+
+    .card-title {
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+        color: white;
+    }
+
+    .card-text {
+        color: #ccc;
+    }
+
+    .card-header, .card-footer {
+        background-color: transparent;
+        color: #fff;
+        border-color: #e50914;
+    }
+
+    /* Banner */
+    .banner-home {
+        background: url('/images/banner.png') no-repeat center center;
+        background-size: cover;
+        height: 620px;
+        width: 100%;
+        border-bottom: 3px solid #e50914;
+    }
+
+    .object-fit-cover {
+        object-fit: cover;
+        height: 200px;
+    }
+
+
+    /* Footer */
+    footer {
+        background-color: #000;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+        border-top: 3px solid #e50914;
+        margin-top: 40px;
+    }
+
+    /* SIMULADOR */
+    .card-narracion {
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        border-left: 4px solid #dc3545; 
+        font-family: 'Courier New', Courier, monospace;
+        padding: 1rem;
+    }
+
+
+    @keyframes shake {
+        0% { transform: translate(0); }
+        20% { transform: translate(-5px, 0); }
+        40% { transform: translate(5px, 0); }
+        60% { transform: translate(-5px, 0); }
+        80% { transform: translate(5px, 0); }
+        100% { transform: translate(0); }
+    }
+
+    .shake {
+        animation: shake 0.4s ease-in-out;
+    }
+
+    .ganador-highlight {
+        border: 3px solid gold !important;
+        box-shadow: 0 0 20px gold;
+        padding: 5px;
+        border-radius: 10px;
+    }

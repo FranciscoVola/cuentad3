@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Luchador;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LuchadorController extends Controller
 {
@@ -29,15 +30,17 @@ class LuchadorController extends Controller
             'ciudad_origen' => 'nullable|string|max:255',
             'biografia' => 'nullable|string',
             'imagen' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'imagen.image' => 'El archivo debe ser una imagen.',
+            'imagen.mimes' => 'La imagen debe ser de tipo: jpg, jpeg, png o webp.',
+            'imagen.max' => 'La imagen no debe superar los 2MB.',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['nombre', 'alias', 'peso', 'altura', 'ciudad_origen', 'biografia']);
 
         if ($request->hasFile('imagen')) {
-            $file = $request->file('imagen');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/luchadores'), $filename);
-            $data['imagen'] = 'uploads/luchadores/' . $filename;
+            $data['imagen'] = $request->file('imagen')->store('luchadores', 'public');
         }
 
         Luchador::create($data);
@@ -65,13 +68,14 @@ class LuchadorController extends Controller
             'imagen' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['nombre', 'alias', 'peso', 'altura', 'ciudad_origen', 'biografia']);
 
         if ($request->hasFile('imagen')) {
-            $file = $request->file('imagen');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/luchadores'), $filename);
-            $data['imagen'] = 'uploads/luchadores/' . $filename;
+            if ($luchador->imagen && Storage::disk('public')->exists($luchador->imagen)) {
+                Storage::disk('public')->delete($luchador->imagen);
+            }
+
+            $data['imagen'] = $request->file('imagen')->store('luchadores', 'public');
         }
 
         $luchador->update($data);
@@ -79,11 +83,19 @@ class LuchadorController extends Controller
         return redirect()->route('luchadores.index')->with('success', 'Luchador actualizado correctamente.');
     }
 
+    public function confirmDelete($id)
+    {
+    $luchador = Luchador::findOrFail($id);
+    return view('admin.luchadores.confirm-delete', compact('luchador'));
+    }
+
+
     public function destroy($id)
     {
         $luchador = Luchador::findOrFail($id);
-        if ($luchador->imagen && file_exists(public_path($luchador->imagen))) {
-            unlink(public_path($luchador->imagen));
+
+        if ($luchador->imagen && Storage::disk('public')->exists($luchador->imagen)) {
+            Storage::disk('public')->delete($luchador->imagen);
         }
 
         $luchador->delete();

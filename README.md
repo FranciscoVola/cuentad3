@@ -64,3 +64,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 # cuentad3
 primer commit del proyecto
  0f2ae2ba00b42ddf8294e2019d9afe91d5b22a0c
+
+
+# DATOS DEL PROYECTO
+CUENTAD3 trata de un sitio que reune todo el ambiente de la lucha libre Argentina (Pro Wrestling) en un mismo lugar, con una tienda, un lugar seguro para sacar entradas para eventos, una base de datos con luchadores nacionales, un blog de noticias, un simulador de combates fantasia y mucho mas.
+Las funcionalidades implementadas hasta ahora son un inicio de sesion, varios ABM, la carga y subida de imagenes utilizando FILE SYSTEM (storage), un sistema de autenticacion de administrador. Las tecnologias utilizadas son Laravel y para correr el proyecto es necesario instalar composer, ejecutar en consola composer install, luego correr las migraciones correspondientes y cargar sus Seeders, esto con php artisan migrate --seed, luego ejecturar php artisan serve para iniciar el servidor.   
