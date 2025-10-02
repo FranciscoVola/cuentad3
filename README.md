@@ -1,71 +1,114 @@
-HEAD
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+**CUENTAD3** 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+CUENTAD3 es una plataforma web desarrollada en **Laravel** como proyecto de tesis.
+Ofrece una experiencia completa que combina noticias, tienda online, gestión de eventos con entradas y funcionalidades de comunidad relacionadas con la lucha libre independiente.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Tecnologías utilizadas**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Laravel 12.x
+ (Backend)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+PHP 8.3
 
-## Learning Laravel
+MySQL
+ (Base de datos)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Bootstrap 5
+ (Frontend)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Laravel Breeze
+ (Autenticación)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+MercadoPago SDK
+ (Pagos)
 
-## Laravel Sponsors
+Hosting en Hostinger
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+**Requisitos previos**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+Antes de instalar el proyecto, asegurate de tener instalado:
 
-## Contributing
+**PHP >= 8.1**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Composer 2**
 
-## Code of Conduct
+**MySQL**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Node.js + NPM (opcional, si querés compilar assets)**
 
-## Security Vulnerabilities
+**Git**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+**Instalación y ejecución**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# cuentad3
-primer commit del proyecto
- 0f2ae2ba00b42ddf8294e2019d9afe91d5b22a0c
+1. **Clonar el repositorio**
+
+git clone https://github.com/FranciscoVola/cuentad3.git
+
+cd cuentad3
+
+2. **Instalar dependencias de PHP**
+
+composer install
+
+3. **Copiar el archivo de entorno y configurar las variables**
+
+cp .env.example .env
+
+**Configura en .env:**
+
+DB_DATABASE, DB_USERNAME, DB_PASSWORD
+
+APP_URL (por ejemplo: http://localhost:8000)
+
+MERCADOPAGO_ACCESS_TOKEN (para pagos)
+
+4. **Generar la key de la aplicación**
+
+php artisan key:generate
 
 
-# DATOS DEL PROYECTO
-CUENTAD3 trata de un sitio que reune todo el ambiente de la lucha libre Argentina (Pro Wrestling) en un mismo lugar, con una tienda, un lugar seguro para sacar entradas para eventos, una base de datos con luchadores nacionales, un blog de noticias, un simulador de combates fantasia y mucho mas.
-Las funcionalidades implementadas hasta ahora son un inicio de sesion, varios ABM, la carga y subida de imagenes utilizando FILE SYSTEM (storage), un sistema de autenticacion de administrador. Las tecnologias utilizadas son Laravel y para correr el proyecto es necesario instalar composer, ejecutar en consola composer install, luego correr las migraciones correspondientes y cargar sus Seeders, esto con php artisan migrate --seed, luego ejecturar php artisan serve para iniciar el servidor.   
+5. **Ejecutar migraciones (y seeders si están configurados)**
+
+php artisan migrate --seed
+
+
+6. **Crear el enlace simbólico para las imágenes**
+
+php artisan storage:link
+
+
+7. **Levantar el servidor**
+
+php artisan serve
+
+El sitio estará disponible en: http://localhost:8000
+
+Funcionalidades principales
+
+Registro e inicio de sesión con roles (usuario/admin).
+
+Gestión de productos (tienda online).
+
+Sistema de carrito de compras.
+
+Integración con MercadoPago para pagos.
+
+Gestión de entradas a eventos (con confirmación por mail y QR).
+
+Sección de noticias.
+
+Módulo de luchadores con ranking y simulador.
+
+Panel de administración completo.
+
+**Autor**
+
+Desarrollado por Francisco Vola
+
+Proyecto presentado como tesis final de la carrera de Programación Web.
